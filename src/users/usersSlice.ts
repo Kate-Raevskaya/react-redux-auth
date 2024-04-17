@@ -13,23 +13,46 @@ const defaultState: UserState = {
 };
 
 export const loginUser = createAsyncThunk<string, {email: string, password: string}>('users/loginUser', async(userCredential) => {
-    let response = await fetch('localhost:4000/user', {
+    let response = await fetch('http://localhost:4000/login', {
         method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({email: userCredential.email, password: userCredential.password})
     })
 
-    let userData:{ok: true | false; errors?: string; token?: any | undefined}
+    // let data:{ok: true | false; errors?: string; token?: any | undefined}
 
     if (response.ok) {
         let data = await response.json()
-        userData = JSON.parse(data)
-        if (userData.ok) {
-            return userData.token as string
+
+        if (data.ok) {
+            return data.token as string
         } else {
-            throw new Error(userData.errors)
+            throw new Error(data.errors)
         }
     }
     throw new Error("login error")
+})
+
+export const registrationUser = createAsyncThunk<any, {email: string, password: string}>('users/registrationUser', async(userCredential) => {
+    let response = await fetch('http://localhost:4000/user', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({email: userCredential.email, password: userCredential.password})
+    })
+    if (response.ok) {
+        let data = await response.json()
+
+        if (data.ok) {
+            return data.token as string
+        } else {
+            throw new Error(data.errors)
+        }
+    }
+    throw new Error('registration error')
 })
 
 
@@ -48,17 +71,28 @@ const usersSlice = createSlice( {
                 state.loading = false;
                 state.user = action.payload;
                 state.error = null;
+                console.log('success')
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
                 state.user = null;
-                console.log(action.error.message)
-                if (action.error.message === 'Request failed with status code 401') {
-                    state.error = 'Access Denied! Invalid Credentials'
-                } else {
-                    state.error = action.error.message
-                }
-
+                state.error = action.error.message
+            })
+            .addCase(registrationUser.pending, (state) => {
+                state.loading = true;
+                state.user = null;
+                state.error = null;
+        })
+            .addCase(registrationUser.fulfilled, (state, action)=>{
+                state.loading = false;
+                state.user = action.payload;
+                state.error = null;
+                console.log('success')
+            })
+            .addCase(registrationUser.rejected, (state, action) => {
+                state.loading = false;
+                state.user = null;
+                state.error = action.error.message
             })
     }
 })

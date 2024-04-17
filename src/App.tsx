@@ -15,12 +15,12 @@ function App() {
           {index: true, element: <StartPage />},
         {
           path: 'login',
-          element: <RegistrationPage />
+          element: <LoginPage/>,
         },
         {
           path: 'registration',
-          element: <LoginPage/>,
-        }
+          element: <RegistrationPage />,
+        },
       ]
     }
   ])
