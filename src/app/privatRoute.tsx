@@ -1,8 +1,8 @@
 import {useSelector} from "react-redux";
 import {IRootState} from "../pages/loginPage";
-import {Outlet} from "react-router-dom";
+import {Navigate, Outlet} from "react-router-dom";
 
-export const PrivatRout = (): React.ReactElement => {
+export const PrivatRoute = (): React.ReactElement => {
     const {user} = useSelector((state: IRootState) => state.users);
 
     return (
@@ -11,7 +11,7 @@ export const PrivatRout = (): React.ReactElement => {
                 user ?
                     <Outlet />
                     :
-                    <>You're not registered</>
+                    <Navigate to={'/'} />
             }
         </>
     )

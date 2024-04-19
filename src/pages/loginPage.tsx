@@ -28,7 +28,7 @@ export const LoginPage = () => {
             if(result.payload) {
                 setEmail('')
                 setPassword('')
-                navigate('/')
+                navigate('/account/image')
             }
         })
     }

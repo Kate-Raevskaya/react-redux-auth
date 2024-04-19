@@ -29,7 +29,7 @@ export const RegistrationPage = () : React.ReactElement => {
                 setEmail('')
                 setPassword('')
                 setCheckPassword('')
-                navigate('/')
+                navigate('/account/image')
             }
         })
     }

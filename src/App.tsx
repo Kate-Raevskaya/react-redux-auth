@@ -5,6 +5,8 @@ import {StartPage} from "./pages/startPage";
 import {RegistrationPage} from "./pages/registrationPage";
 import {LoginPage} from "./pages/loginPage";
 import {Root} from "./pages/root";
+import {PrivatRoute} from "./app/privatRoute";
+import {UserPage} from "./users/userPage";
 
 function App() {
   const router = createBrowserRouter( [
@@ -21,6 +23,16 @@ function App() {
           path: 'registration',
           element: <RegistrationPage />,
         },
+        {
+          path: 'account',
+          element: <PrivatRoute />,
+          children: [
+            {
+              path: 'image',
+              element: <UserPage />
+            },
+          ]
+        }
       ]
     }
   ])
